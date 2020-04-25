@@ -1,0 +1,55 @@
+import {
+  configureStore,
+  createReducer,
+  getDefaultMiddleware,
+  combineReducers,
+} from "@reduxjs/toolkit";
+import { AsyncStorage } from "react-native";
+
+import { persistStore, persistReducer, PERSIST } from "redux-persist";
+// import storage from "redux-persist/lib/storage";
+
+const initialState = {
+  userName: null,
+  userId: null,
+  userPosts: [],
+  avatar: null,
+};
+
+const persistConfig = {
+  key: "root",
+  storage: AsyncStorage,
+};
+
+const reducer = {
+  CURRENT_USER: (state, { payload }) => {
+    console.log("reducer --->", payload);
+    return {
+      ...state,
+      userName: payload.userName,
+      userId: payload.userId,
+      userPosts: payload.userPosts,
+      avatar: payload.avatar,
+    };
+  },
+  USER_SIGNOUT: () => initialState,
+};
+
+const user = createReducer(initialState, reducer);
+
+const rootReducer = combineReducers({
+  user,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [PERSIST],
+    },
+  }),
+});
+
+export const persistor = persistStore(store);
