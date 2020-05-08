@@ -37,7 +37,9 @@ export const AuthScreen = () => {
       payload: {
         userName: currentUser.displayName,
         userId: currentUser.uid,
-        avatar: currentUser.photoURL,
+        avatar: currentUser.photoURL
+          ? currentUser.photoURL
+          : "https://picua.org/images/2020/04/20/41581d17aefc850989b9ca98f49c2a03.jpg",
       },
     });
   };
@@ -71,7 +73,10 @@ export const AuthScreen = () => {
       await storage.ref(`avatar/${uniqueId}`).put(file);
       const url = await storage.ref("avatar").child(uniqueId).getDownloadURL();
       return url;
-    } else uploadAvatar("../../assets/images/top-black-avatar.jpg");
+    } else
+      uploadAvatar(
+        "https://picua.org/images/2020/04/20/41581d17aefc850989b9ca98f49c2a03.jpg"
+      );
   };
 
   const registerUser = async () => {
@@ -103,16 +108,21 @@ export const AuthScreen = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ImageBackground
-        source={require("../../assets/images/road.jpg" ||
-          "https://picua.org/images/2020/04/20/b0bee066d47e2e7afa2078d8df52c728.jpg")}
-        style={styles.image}
-      >
-        <KeyboardAvoidingView
+    <KeyboardAvoidingView
+      behavior={Platform.Os == "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ImageBackground
+          source={
+            require("../../assets/images/road.jpg")
+          }
+          style={styles.image}
+        >
+          {/* <KeyboardAvoidingView
           behavior={Platform.Os == "ios" ? "padding" : "height"}
           style={styles.container}
-        >
+        > */}
           <View style={styles.form}>
             {!isRegister && (
               <TouchableOpacity onPress={takePhoto}>
@@ -178,14 +188,16 @@ export const AuthScreen = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </KeyboardAvoidingView>
-      </ImageBackground>
-    </TouchableWithoutFeedback>
+          {/* </KeyboardAvoidingView> */}
+        </ImageBackground>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },

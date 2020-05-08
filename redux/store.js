@@ -13,7 +13,7 @@ const initialState = {
   userName: null,
   userId: null,
   userPosts: [],
-  avatar: null,
+  avatar: "https://picua.org/images/2020/04/20/41581d17aefc850989b9ca98f49c2a03.jpg",
 };
 
 const persistConfig = {

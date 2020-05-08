@@ -1,33 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import { firestore } from "../../firebase/config";
 import { CollectionDrawing } from "../../components/CollectionDrawing";
 import { useDispatch } from "react-redux";
 
 export const PostsScreen = () => {
-//   const dispatch = useDispatch();
-  const [allPosts, setAllPosts] = useState([]);
 
-//   useEffect(() => {
-//     currentUser();
-//   }, []);
+  const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
     getCollection();
   }, []);
-
-//   const currentUser = async () => {
-//     const currentUser = await auth.currentUser;
-
-//     dispatch({
-//       type: "CURRENT_USER",
-//       payload: {
-//         userName: currentUser.displayName,
-//         userId: currentUser.uid,
-//         avatar: currentUser.photoURL,
-//       },
-//     });
-//   };
 
   const getCollection = async () => {
     await firestore.collection("posts").onSnapshot((data) => {
@@ -41,6 +24,13 @@ export const PostsScreen = () => {
 
   return (
     <View style={styles.container}>
+      <View style={{ ...StyleSheet.absoluteFill }}>
+        <Image
+          source={{uri:"https://picua.org/images/2020/03/25/5a58e84e1c52070b88ab342ec2b3bc16.jpg"}}
+          // {require("../../assets/images/road.jpg")||"https://picua.org/images/2020/04/20/b0bee066d47e2e7afa2078d8df52c728.jpg"}
+          style={{ flex: 1, width: null, height: null }}
+        />
+      </View>
       <CollectionDrawing data={allPosts} />
     </View>
   );

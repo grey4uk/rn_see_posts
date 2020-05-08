@@ -13,6 +13,7 @@ import {
 import { firestore } from "../firebase/config";
 // import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from '@expo/vector-icons';
 
 export const CollectionDrawing = ({ data }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -47,7 +48,8 @@ export const CollectionDrawing = ({ data }) => {
               style={styles.like}
               onPress={() => getCurrentUserPost(item.id)}
             >
-              <Text>{item.like?item.like:0}</Text>
+              <Ionicons name="ios-heart-empty" size={48} color="red" />
+              <Text style={{position:"absolute"}}>{item.like?item.like:0}</Text>
             </TouchableOpacity>
             <View
               style={{
@@ -73,7 +75,8 @@ export const CollectionDrawing = ({ data }) => {
                 style={styles.comments}
                 onPress={() => navigation.navigate("Comments",{item})}
               >
-                <Text>COMMENTS</Text>
+                <Text style={{marginRight:10}}>"{item.postTitle}"</Text>
+                <Ionicons name="md-text" size={48} color="black" />
               </TouchableOpacity>
             </View>
             <Image style={styles.image} source={{ uri: item.image }} />
@@ -140,9 +143,9 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   like: {
-    borderWidth: 1,
-    borderColor: "red",
-    borderRadius: 50,
+    // borderWidth: 1,
+    // borderColor: "red",
+    // borderRadius: 50,
     width: 50,
     height: 50,
     justifyContent: "center",
@@ -151,7 +154,14 @@ const styles = StyleSheet.create({
     bottom: 15,
     left: 15,
   },
-  comments: {},
+  comments: {
+    flex:1,
+    flexDirection:"row",
+    justifyContent:"space-between",
+    alignItems:"center",
+    width:240,
+    // padding:20,
+  },
   centeredView: {
     backgroundColor: "red",
     width: 350,

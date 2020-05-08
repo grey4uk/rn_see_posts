@@ -24,7 +24,7 @@ export const CreateScreen = () => {
   const [takePhoto, settakePhoto] = useState("");
   const [photo, setphoto] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const [coment, setComent] = useState("");
+  const [postTitle, setPostTitle] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -41,6 +41,7 @@ export const CreateScreen = () => {
   };
 
   const uploadStorage = async (photo) => {
+    setModalVisible(!modalVisible);
     if (photo) {
       const response = await fetch(photo);
       const file = await response.blob();
@@ -49,13 +50,15 @@ export const CreateScreen = () => {
       const url = await storage.ref("image").child(uniqueId).getDownloadURL();
       createPost(url);
     } else Alert.alert("No photo");
+    setPostTitle("");
+    // setModalVisible(!modalVisible);
   };
 
   const createPost = async (img) => {
     let location = await Location.getCurrentPositionAsync({});
     await firestore.collection("posts").add({
       image: img,
-      coment,
+      postTitle:postTitle,
       avatar,
       userId,
       userName,
@@ -67,10 +70,14 @@ export const CreateScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+    behavior={Platform.Os == "ios" ? "padding" : "height"}
+    style={styles.container}
+  >
+    {/* <View style={styles.container}> */}
       <View style={{ ...StyleSheet.absoluteFill }}>
         <Image
-          source={require("../../assets/images/road.jpg"||"https://picua.org/images/2020/04/20/b0bee066d47e2e7afa2078d8df52c728.jpg")}
+          source={{uri:"https://picua.org/images/2020/03/25/5a58e84e1c52070b88ab342ec2b3bc16.jpg"}}
           style={{ flex: 1, width: null, height: null }}
         />
       </View>
@@ -110,10 +117,10 @@ export const CreateScreen = () => {
           </TouchableOpacity>
         </Camera>
       ) : (
-        <KeyboardAvoidingView
-        behavior={Platform.Os == "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
+      //   <KeyboardAvoidingView
+      //   behavior={Platform.Os == "ios" ? "padding" : "height"}
+      //   style={styles.container}
+      // >
         <Modal
           style={styles.centeredView}
           animationType="slide"
@@ -141,9 +148,9 @@ export const CreateScreen = () => {
               
                 <TextInput
                   style={styles.input}
-                  placeholder="your comment"
-                  onChangeText={(value) => setComent({ ...coment, value })}
-                  value={coment}
+                  placeholder="Add title..."
+                  onChangeText={(value) => setPostTitle(value)}
+                  value={postTitle}
                 />
               
               <TouchableOpacity
@@ -159,18 +166,16 @@ export const CreateScreen = () => {
                 }}
               >
                 <View>
-                  <Text style={styles.btnTitle}>Hide Modal</Text>
+                  <Text style={styles.btnTitle}>Go next</Text>
                 </View>
               </TouchableHighlight>
             </View>
           </View>
         </Modal>
-        </KeyboardAvoidingView>
+        // </KeyboardAvoidingView>
       )}
-      {/* <TouchableOpacity onPress={() => uploadStorage(photo)} style={styles.btn}>
-        <Text style={styles.btnTitle}>POST ?</Text>
-      </TouchableOpacity> */}
-    </View>
+    {/* </View> */}
+    </KeyboardAvoidingView>
   );
 };
 
