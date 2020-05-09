@@ -12,4 +12,4 @@ https://expo.io/@grey4uk/see_posts
 
 5.Like new post - https://j.gifs.com/jZ9klB.gif
 
-[![Watch the video](https://img.youtube.com/vi/T-D1KVIuvjA/maxresdefault.jpg)](https://youtu.be/T-D1KVIuvjA)
+[![Watch the video](https://j.gifs.com/lx9m17.gif)](https://j.gifs.com/lx9m17.gif)
